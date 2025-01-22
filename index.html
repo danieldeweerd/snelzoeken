@@ -88,10 +88,23 @@
 </head>
 <body>
   <div class="container">
-    <h1>Zoek Kamerstukken & Rechtspraak</h1>
+    <h1>Zoeken op Vindplaats</h1>
     <p class="description">
-      Vul hieronder de juiste gegevens in en klik op "Zoek".
+      Vind jurisprudentie en parlementaire geschiedenis met één klik.
     </p>
+
+    <!-- Zoek Rechtspraak (ECLI of Curia) -->
+    <form onsubmit="zoekRechtspraak(); return false;">
+      <label for="rechtspraakNummer">Rechtspraak-nummer (ECLI of Curia)</label>
+      <input type="text" id="rechtspraakNummer" name="rechtspraakNummer"
+             placeholder="Bijv. ECLI:NL:HR:2020:1234 of C-476/17" required>
+      <!-- Foutmelding bij rechtspraakNummer -->
+      <div id="errorRechtspraak" class="errorMessage"></div>
+
+      <button type="submit">Zoek Rechtspraak</button>
+    </form>
+
+    <hr>
 
     <!-- Zoek Kamerstukken -->
     <form onsubmit="zoekKamerstukken(); return false;">
@@ -104,19 +117,6 @@
       <input type="text" id="documentnummer" name="documentnummer" placeholder="Bijv. 10" required>
 
       <button type="submit">Zoek Kamerstukken</button>
-    </form>
-
-    <hr>
-
-    <!-- Zoek Rechtspraak (ECLI of Curia) -->
-    <form onsubmit="zoekRechtspraak(); return false;">
-      <label for="rechtspraakNummer">Rechtspraak-nummer (ECLI of Curia)</label>
-      <input type="text" id="rechtspraakNummer" name="rechtspraakNummer"
-             placeholder="Bijv. ECLI:NL:HR:2020:1234 of C-476/17" required>
-      <!-- Foutmelding bij rechtspraakNummer -->
-      <div id="errorRechtspraak" class="errorMessage"></div>
-
-      <button type="submit">Zoek Rechtspraak</button>
     </form>
 
     <div class="footer">
