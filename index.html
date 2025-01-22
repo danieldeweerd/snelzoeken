@@ -2,140 +2,448 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <title>Snel Zoeken</title>
+  <title>Zoeken op vindplaats</title>
+
+  <!-- Google Font voor de titel -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
   <style>
+    /* ===== Algemene pagina-opmaak ===== */
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f9fafb;
       margin: 0;
       padding: 0;
+      background-color: #ECEFF1; /* iets donkerder lichtgrijs */
+      font-family: Arial, sans-serif;
+      color: #333;
     }
 
-    .container {
-      max-width: 400px;
-      margin: 60px auto;
+    /* ===== Container voor titel + subtitel (voorstellen 2,3,5,6,7,8) ===== */
+    .title-container {
+      /* Gekleurde ‘balk’ om de titel heen */
+/*      background-color: #253D5B;  /* Zelfde bruintint als de knoppen */*/
+      color: #fff;
+      max-width: 800px;
+      margin: 30px auto 20px auto; /* wat ruimte boven/onder */
+      padding: 20px;
+      border-radius: 4px;
+    }
+
+    .page-title {
+      margin: 0 0 0 0;     /* links uitgelijnd en klein beetje marge onder */
+      font-size: 2.2rem;        /* groter dan de rest (voorstel 2) */
+      font-weight: 700;         /* extra vet (voorstel 2) */
+      font-family: 'Montserrat', sans-serif; /* ander lettertype (voorstel 3) */
+      text-align: center;         /* links uitgelijnd (voorstel 8) */
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* subtiele schaduw (voorstel 7) */
+    }
+
+    .page-subtitle {
+      margin: 0; 
+      font-size: 1rem;
+      opacity: 0.9;
+      text-align: center;  /* ook links uitgelijnd */
+    }
+
+    /* ===== Container voor beide kolommen ===== */
+    .main-container {
+      display: flex;
+      flex-wrap: wrap; /* als het te smal wordt, mag het omslaan */
+      justify-content: center;
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto 40px; /* ruimte onderaan */
+      padding: 0 10px;     /* zijdelingse padding */
+    }
+
+    /* ===== Linkerkolom met twee panels stacked ===== */
+    .left-column {
+      flex: 1 1 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 300px;
+    }
+
+    /* ===== Panel met gekleurde, effen kopregel ===== */
+    .panel {
       background-color: #ffffff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-      padding: 30px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 6px;
+      overflow: hidden; /* zodat de kopregel niet 'uitsteekt' */
     }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 1rem;
-      color: #333333;
+    /* De kopregel en beschrijving in elk paneel */
+    .panel-header {
+      color: #fff;
+      padding: 15px 20px;
+    }
+    .panel-title {
+      margin: 0 0 0.4rem 0;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .panel-description {
+      margin: 0;
+      font-size: 0.9rem;
+      opacity: 0.9;
     }
 
-    p.description {
-      font-size: 14px;
-      text-align: center;
-      margin-bottom: 2rem;
-      color: #666666;
+    /* Panel-body is het witte gedeelte onder de header */
+    .panel-body {
+      padding: 20px 25px;
     }
 
+    /* Kleuren voor de verschillende panelen */
+    .panel-rechtspraak .panel-header {
+      background-color: #80A1D4; /* Teal-ish */
+    }
+    .panel-kamerstukken .panel-header {
+      background-color: #75C9C8; /* Lichte cyaan */
+    }
+
+    /* ===== Rechterkolom: Geschiedenis ===== */
+    .right-column {
+      flex: 0 0 300px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-radius: 6px;
+      min-width: 260px;
+      max-height: 80vh;
+      overflow-y: auto;
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Gekleurde kopregel voor zoekgeschiedenis */
+    .history-header {
+      background-color: #C0B9DD; /* Paars */
+      color: #fff;
+      padding: 15px 20px;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+    }
+    .history-header h2 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .history-body {
+      padding: 20px;
+      flex: 1;
+    }
+
+    .history-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    .history-list li {
+      margin-bottom: 0.75rem;
+    }
+    .history-list a {
+      font-family: inherit;
+      font-weight: bold;
+      color: #003366; /* donkerblauw */
+      text-decoration: none;
+    }
+    .history-list a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== Formulieren & inputs ===== */
     form {
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
     label {
       font-weight: 600;
       margin-bottom: 0.25rem;
-      color: #333333;
+      color: #333;
     }
 
-    input[type="text"] {
-      padding: 0.75rem;
+    input[type="text"],
+    select {
+      padding: 0.6rem 0.75rem;
       border: 1px solid #dddddd;
       border-radius: 4px;
       font-size: 14px;
     }
 
+    /* ==== Buttons in effen bruin/grijs tint ==== */
     button[type="submit"] {
-      background-color: #007bff;
+      background-color: #253D5B;
       color: #ffffff;
-      padding: 0.75rem;
+      padding: 0.7rem 1.2rem;
       border: none;
       border-radius: 4px;
       font-weight: 600;
       cursor: pointer;
       font-size: 14px;
       transition: background-color 0.3s;
+      align-self: flex-start; /* links uitlijnen */
     }
-
     button[type="submit"]:hover {
-      background-color: #0056b3;
+      background-color: #1565C0; /* let op: andere tint blauw, evt. aanpassen */
     }
 
+    /* Rode rand bij fout */
+    .inputError {
+      border: 2px solid red !important;
+    }
+
+    /* Foutmeldingen */
+    .errorMessage {
+      color: red;
+      font-size: 0.85rem;
+      margin-top: -0.4rem; 
+      margin-bottom: 0.4rem;
+    }
+
+    /* Curia-velden naast elkaar */
+    .curia-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    /* Footer */
     .footer {
-      margin-top: 1rem;
       text-align: center;
-      font-size: 12px;
-      color: #999999;
-    }
-
-    hr {
-      border: 0;
-      height: 1px;
-      background-color: #ddd;
-      margin: 2rem 0;
+      font-size: 0.8rem;
+      color: #999;
+      padding: 15px 0;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Zoek Kamerstukken & Rechtspraak</h1>
-    <p class="description">
-      Vul hieronder de juiste gegevens in en klik op "Zoek".
-    </p>
 
-    <!-- Zoek Kamerstukken -->
-    <form onsubmit="zoekKamerstukken(); return false;">
-      <label for="dossiernummer">Dossiernummer</label>
-      <input type="text" id="dossiernummer" name="dossiernummer"
-             placeholder="Bijv. 35000" required>
+  <!-- Titel + subtitel in een gekleurde container -->
+  <div class="title-container">
+    <h1 class="page-title">Zoeken op vindplaats</h1>
+    <p class="page-subtitle">Vind jurisprudentie en kamerstukken met één klik.</p>
+  </div>
 
-      <label for="documentnummer">Documentnummer</label>
-      <input type="text" id="documentnummer" name="documentnummer"
-             placeholder="Bijv. 10" required>
+  <!-- Hoofdcontainer: twee kolommen -->
+  <div class="main-container">
+    
+    <!-- Linkerkolom met twee panels -->
+    <div class="left-column">
+      <!-- Panel Rechtspraak -->
+      <div class="panel panel-rechtspraak">
+        <div class="panel-header">
+          <h2 class="panel-title">Zoek rechtspraak</h2>
+          <p class="panel-description">Voer hier een ECLI- of Curia-nummer in.</p>
+        </div>
+        <div class="panel-body">
+          <!-- ECLI-zoeker -->
+          <form onsubmit="zoekECLI(); return false;">
+            <label for="ecliNummer">Zoeken op ECLI-nummer</label>
+            <input type="text" id="ecliNummer" required placeholder="Bijv. ECLI:NL:HR:2020:1234">
+            <div id="errorEcli" class="errorMessage"></div>
 
-      <button type="submit">Zoek Kamerstukken</button>
-    </form>
+            <button type="submit">Zoek ECLI</button>
+          </form>
 
-    <hr>
+          <!-- Curia-zoeker -->
+          <form onsubmit="zoekCuriaNummer(); return false;">
+            <label for="curiaType">Zoeken op Curia-nummer</label>
+            <div class="curia-row">
+              <select id="curiaType">
+                <option value="C">C</option>
+                <option value="T">T</option>
+              </select>
+              <input type="text" id="curiaNumber" required placeholder="Bijv. 476" style="width: 60px;">
+              <span>/</span>
+              <input type="text" id="curiaYear" required placeholder="Bijv. 17" style="width: 60px;">
+            </div>
+            
+            <!-- Taalkeuze (dropdown) - alleen voor Curia -->
+            <label for="curiaLanguage">Taal van de uitspraak</label>
+            <select id="curiaLanguage">
+              <option value="nl" selected>NL</option>
+              <option value="en">EN</option>
+              <option value="fr">FR</option>
+              <option value="de">DE</option>
+            </select>
+            <div id="errorCuria" class="errorMessage"></div>
 
-    <!-- Zoek Rechtspraak -->
-    <form onsubmit="zoekRechtspraak(); return false;">
-      <label for="ecliNummer">ECLI-nummer</label>
-      <input type="text" id="ecliNummer" name="ecliNummer"
-             placeholder="Bijv. ECLI:NL:HR:2020:1234" required>
+            <button type="submit">Zoek Curia</button>
+          </form>
+        </div><!-- /panel-body -->
+      </div><!-- /panel Rechtspraak -->
 
-      <button type="submit">Zoek Rechtspraak</button>
-    </form>
+      <!-- Panel Kamerstukken -->
+      <div class="panel panel-kamerstukken">
+        <div class="panel-header">
+          <h2 class="panel-title">Zoek kamerstukken</h2>
+          <p class="panel-description">
+            Vul dossiernummer (≥ 25000) en documentnummer in.
+          </p>
+        </div>
+        <div class="panel-body">
+          <form onsubmit="zoekKamerstukken(); return false;">
+            <label for="dossiernummer">Dossiernummer</label>
+            <input type="text" id="dossiernummer" required placeholder="Bijv. 35000">
+            <div id="errorDossiernummer" class="errorMessage"></div>
 
-    <div class="footer">
-      &copy; 2024 &ndash; Alle rechten voorbehouden.
-    </div>
+            <label for="documentnummer">Documentnummer</label>
+            <input type="text" id="documentnummer" required placeholder="Bijv. 10">
+
+            <button type="submit">Zoek Kamerstukken</button>
+          </form>
+        </div><!-- /panel-body -->
+      </div><!-- /panel Kamerstukken -->
+
+    </div><!-- /left-column -->
+
+    <!-- Rechterkolom: Zoekgeschiedenis -->
+    <div class="right-column">
+      <div class="history-header">
+        <h2>Zoekgeschiedenis</h2>
+      </div>
+      <div class="history-body">
+        <ul id="searchHistoryList" class="history-list"></ul>
+      </div>
+    </div><!-- /right-column -->
+  </div><!-- /main-container -->
+
+  <!-- Footer -->
+  <div class="footer">
+    &copy; 2024 – Alle rechten voorbehouden.
   </div>
 
   <script>
-    // Zoek Kamerstukken
-    function zoekKamerstukken() {
-      const dossiernummer = document.getElementById('dossiernummer').value;
-      const documentnummer = document.getElementById('documentnummer').value;
-      const url = `https://zoek.officielebekendmakingen.nl/kst-${dossiernummer}-${documentnummer}.html`;
-      // Opent de URL in een nieuw tabblad
-      window.open(url, '_blank');
+    // In-memory array voor zoekgeschiedenis
+    let searchHistory = [];
+
+    // Bij laden van de pagina -> zoekgeschiedenis uit localStorage
+    window.addEventListener('DOMContentLoaded', () => {
+      const storedHistory = localStorage.getItem('searchHistory');
+      if (storedHistory) {
+        searchHistory = JSON.parse(storedHistory);
+        // Render in de UI
+        searchHistory.forEach(item => {
+          addHistoryItem(item.linkText, item.url, false);
+        });
+      }
+    });
+
+    /**
+     * Voegt één item toe aan de UI-lijst. Optioneel ook aan de array & localStorage.
+     * @param {string} linkText  - Tekst in de link
+     * @param {string} url       - Doellink
+     * @param {boolean} addToArray - Of het item in de array/localStorage moet
+     */
+    function addHistoryItem(linkText, url, addToArray = true) {
+      if (addToArray) {
+        searchHistory.push({ linkText, url });
+        localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+      }
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = "_blank";
+      a.textContent = linkText;
+
+      li.appendChild(a);
+      document.getElementById('searchHistoryList').appendChild(li);
     }
 
-    // Zoek Rechtspraak op ECLI-nummer
-    function zoekRechtspraak() {
-      const ecliNummer = document.getElementById('ecliNummer').value;
-      const url = `https://uitspraken.rechtspraak.nl/details?id=${encodeURIComponent(ecliNummer)}`;
-      // Opent de URL in een nieuw tabblad
+    // Zoek Kamerstukken
+    function zoekKamerstukken() {
+      const dossiernummerInput = document.getElementById('dossiernummer');
+      const dossiernummerError = document.getElementById('errorDossiernummer');
+      const documentnummer = document.getElementById('documentnummer').value.trim();
+
+      dossiernummerInput.classList.remove('inputError');
+      dossiernummerError.textContent = '';
+
+      const dossiernummer = dossiernummerInput.value.trim();
+      const dossiernummerInt = parseInt(dossiernummer, 10);
+
+      // Validatie dossiernummer >= 25000
+      if (isNaN(dossiernummerInt) || dossiernummerInt < 25000) {
+        dossiernummerInput.classList.add('inputError');
+        dossiernummerError.textContent = 'Dossiernummer moet een getal zijn en minimaal 25000.';
+        return;
+      }
+
+      // Alles ok -> url openen en toe aan geschiedenis
+      const url = `https://zoek.officielebekendmakingen.nl/kst-${dossiernummer}-${documentnummer}.html`;
       window.open(url, '_blank');
+      const linkText = `Kamerstuk: kst-${dossiernummer}-${documentnummer}`;
+      addHistoryItem(linkText, url);
+    }
+
+    // Zoek ECLI-nummer
+    function zoekECLI() {
+      const ecliInput = document.getElementById('ecliNummer');
+      const ecliError = document.getElementById('errorEcli');
+      const rawInput = ecliInput.value.trim();
+      const upperInput = rawInput.toUpperCase();
+
+      ecliInput.classList.remove('inputError');
+      ecliError.textContent = '';
+
+      // Check of het ECLI begint met "ECLI:NL" of "ECLI:EU"
+      if (!(upperInput.startsWith("ECLI:NL") || upperInput.startsWith("ECLI:EU"))) {
+        ecliInput.classList.add('inputError');
+        ecliError.textContent = "ECLI moet beginnen met 'ECLI:NL' of 'ECLI:EU'.";
+        return;
+      }
+
+      let url;
+      if (upperInput.startsWith("ECLI:EU")) {
+        // Standaard 'NL'
+        url = `https://eur-lex.europa.eu/legal-content/NL/TXT/?uri=ecli:${encodeURIComponent(upperInput)}`;
+      } else {
+        url = `https://uitspraken.rechtspraak.nl/details?id=${encodeURIComponent(upperInput)}`;
+      }
+
+      window.open(url, '_blank');
+      const linkText = `ECLI: ${rawInput}`;
+      addHistoryItem(linkText, url);
+    }
+
+    // Zoek Curia-nummer
+    function zoekCuriaNummer() {
+      const typeSelect = document.getElementById('curiaType');
+      const numberInput = document.getElementById('curiaNumber');
+      const yearInput = document.getElementById('curiaYear');
+      const curiaError = document.getElementById('errorCuria');
+      const languageDropdown = document.getElementById('curiaLanguage');
+
+      // Schoonmaken van vorige fouten
+      [typeSelect, numberInput, yearInput].forEach(el => el.classList.remove('inputError'));
+      curiaError.textContent = '';
+
+      const typeVal = typeSelect.value; // "C" of "T"
+      const numberVal = numberInput.value.trim();
+      const yearVal = yearInput.value.trim();
+      const languageParam = languageDropdown.value; // "nl", "en", "fr", "de"
+
+      // Validatie: nummer en jaar moeten numeriek zijn
+      if (!/^\d+$/.test(numberVal)) {
+        numberInput.classList.add('inputError');
+        curiaError.textContent = "Voer een geldig getal in bij het nummer.";
+        return;
+      }
+      if (!/^\d+$/.test(yearVal)) {
+        yearInput.classList.add('inputError');
+        curiaError.textContent = "Voer een geldig jaargetal in.";
+        return;
+      }
+
+      // Bouw het curianummer en open de link
+      const curiaString = `${typeVal}-${numberVal}/${yearVal}`;
+      const url = `https://curia.europa.eu/juris/liste.jsf?language=${languageParam}&num=${encodeURIComponent(curiaString)}`;
+
+      window.open(url, '_blank');
+      const linkText = `Curia: ${curiaString} (${languageParam.toUpperCase()})`;
+      addHistoryItem(linkText, url);
     }
   </script>
 </body>
